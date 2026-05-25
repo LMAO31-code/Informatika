@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School System Full - Secure Validation</title>
+
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="Penjajakan_digital.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container" id="authBox">
+  <h2 id="formTitle">Sign In</h2>
+
+  <form id="loginForm">
+    <div class="input-group">
+      <input type="text" id="loginUser" required>
+      <label>Username / Email</label>
+    </div>
+    <div class="input-group">
+      <input type="password" id="loginPass" required>
+      <label>Password</label>
+    </div>
+    <button type="button" onclick="login()">Login</button>
+    <div class="link">
+      Don't have account? <a href="#" onclick="switchForm()">Sign Up</a>
+    </div>
+  </form>
+
+  <form id="registerForm" style="display:none;">
+    <div class="input-group">
+      <input type="text" id="fullName" required>
+      <label>Full Name</label>
+    </div>
+    <div class="input-group">
+      <input type="text" id="username" required>
+      <label>Username</label>
+    </div>
+    <div class="input-group">
+      <input type="email" id="email" required>
+      <label>Email</label>
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" required>
+      <label>Password</label>
+    </div>
+    <div class="input-group">
+      <input type="password" id="confirmPassword" required>
+      <label>Confirm Password</label>
+    </div>
+    <div class="input-group">
+      <select id="role">
+        <option value="student">Siswa</option>
+        <option value="teacher">Guru</option>
+      </select>
+    </div>
+    <div class="input-group" id="classGroup" style="display:none;">
+      <select id="classSelect">
+        <option value="">Pilih Kelas</option>
+        <option value="10-1">10-1</option>
+        <option value="10-2">10-2</option>
+        <option value="10-3">10-3</option>
+        <option value="10-4">10-4</option>
+        <option value="11-1">11-1</option>
+        <option value="11-2">11-2</option>
+        <option value="11-3">11-3</option>
+        <option value="11-4">11-4</option>
+        <option value="12-1">12-1</option>
+        <option value="12-2">12-2</option>
+        <option value="12-3">12-3</option>
+        <option value="12-4">12-4</option>
+      </select>
+    </div>
+    <button type="button" onclick="register()">Register</button>
+    <div class="link">
+      Already have account? <a href="#" onclick="switchForm()">Sign In</a>
+    </div>
+  </form>
+</div>
+
+<div class="glass-dashboard" id="dashboard">
+  <div class="dashboard-content-wrapper">
+
+    <div id="profileSection">
+      <div id="photoWrapper" class="profile-wrapper">
+        <div class="profile-pic">
+          <img id="profileImage" src="https://via.placeholder.com/150">
+        </div>
+        <div class="profile-btn-group">
+          <button class="btn-upload" onclick="document.getElementById('photoInput').click()">Ganti Foto</button>
+          <button class="btn-remove-photo" onclick="removePhoto()">Hapus Foto</button>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" hidden>
+      </div>
+
+      <h2 id="dashboardTitle">Dashboard</h2>
+
+      <div class="info-card">
+        <p><b>Nama:</b> <span id="profileName"></span></p>
+        <p><b>Username:</b> <span id="profileUsername"></span></p>
+        <p><b>Email:</b> <span id="profileEmail"></span></p>
+        <p><b>Role:</b> <span id="profileRole"></span></p>
+        <p id="classRow"><b>Kelas:</b> <span id="profileClass"></span></p>
+      </div>
+    </div>
+
+    <div id="classSection" style="display:none;">
+      
+      <div id="studentPanel">
+        <h2 style="margin-top:15px;">📚 Mata Pelajaran</h2>
+        
+        <div class="glass-card performance-card">
+          <h3>📊 Statistik Sisa Tugas Aktif</h3>
+          <div class="chart-container">
+            <div class="bar-box"><div class="bar math" style="height:0px;"><span>0</span></div><p>25 Mei</p></div>
+            <div class="bar-box"><div class="bar ipa" style="height:0px;"><span>0</span></div><p>26 Mei</p></div>
+            <div class="bar-box"><div class="bar indo" style="height:0px;"><span>0</span></div><p>27 Mei</p></div>
+            <div class="bar-box"><div class="bar inggris" style="height:0px;"><span>0</span></div><p>28 Mei</p></div>
+            <div class="bar-box"><div class="bar sejarah" style="height:0px;"><span>0</span></div><p>29 Mei</p></div>
+            <div class="bar-box"><div class="bar math" style="height:0px;"><span>0</span></div><p>30 Mei</p></div>
+          </div>
+        </div>
+
+        <div id="subjectsContainer"></div>
+      </div>
+
+      <div id="teacherPanel" class="teacher-panel">
+        <h2 style="margin-top:15px;">👩‍🏫 Manajemen Tugas</h2>
+        <div class="teacher-form">
+          <h3>➕ Tambah Tugas</h3>
+          <select id="subjectSelect" class="teacher-input">
+            <option value="">Pilih Mata Pelajaran</option>
+          </select>
+          <input type="text" id="taskInput" placeholder="Nama Tugas">
+          <textarea id="descText" placeholder="Deskripsi Tugas (teks) ..."></textarea>
+          <label style="font-size:13px; margin-top:8px; display:block;">📸 Upload Gambar Deskripsi (opsional):</label>
+          <input type="file" id="descImageInput" accept="image/*">
+          <img id="descImagePreview" class="desc-img-preview" alt="Preview Gambar">
+          <select id="deadlineInput" class="teacher-input">
+            <option value="">Pilih Deadline Mei 2026</option>
+            <option>25 Mei 2026</option>
+            <option>26 Mei 2026</option>
+            <option>27 Mei 2026</option>
+            <option>28 Mei 2026</option>
+            <option>29 Mei 2026</option>
+            <option>30 Mei 2026</option>
+          </select>
+          <button onclick="addTask()">Tambahkan Tugas</button>
+        </div>
+        <h3 style="margin-top: 25px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 8px;">📋 Daftar Tugas Anda & Password Aktif</h3>
+        <div id="teacherTaskList"></div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="bottom-nav" id="bottomNav">
+  <div class="nav-item active" onclick="switchTab('profile')">
+    <i class="ri-user-3-line"></i>Profil
+  </div>
+  <div class="nav-item" onclick="switchTab('class')">
+    <i class="ri-book-2-line"></i>Kelas
+  </div>
+  <div class="nav-item nav-logout" onclick="logout()">
+    <i class="ri-logout-box-r-line"></i>Logout
+  </div>
+</div>
+
+<script src="Penjajakan_digital.JS"></script>
+
+</body>
+</html>
